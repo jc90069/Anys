@@ -1,0 +1,20 @@
+{
+  "name": "anys",
+  "version": "1.0.0",
+  "description": "Claude + Discord private channel communication",
+  "main": "auto_responder.js",
+  "scripts": {
+    "start": "node auto_responder.js",
+    "listen": "node anys_live.js",
+    "check": "node check_anys.js",
+    "reply": "node reply_anys.js",
+    "setup": "node create_anys_channel.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@supabase/supabase-js": "^2.49.1",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "pg": "^8.16.3"
+  }
+}

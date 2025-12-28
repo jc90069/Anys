@@ -1,0 +1,55 @@
+{
+  "name": "Anys",
+  "version": "0.1.0",
+  "year": 1,
+  "created": "2025-12-22",
+  "description": "Year 1 Domestic Agent - Personal AI assistant for automation, voice control, and life management",
+
+  "features": {
+    "voice": {
+      "enabled": true,
+      "status": "ready",
+      "hotkey": "⌥ Space",
+      "engine": "whisper_local",
+      "device": "MacBook Pro Microphone (AVFoundation :1)",
+      "notes": "Fixed: Now uses ffmpeg to record from correct device. Requires Terminal accessibility permission in System Settings."
+    },
+    "file_automation": {
+      "enabled": false,
+      "status": "planned",
+      "tasks": ["downloads_organizer", "desktop_cleaner", "auto_backup", "smart_rename"]
+    },
+    "task_management": {
+      "enabled": false,
+      "status": "planned",
+      "tasks": ["quick_capture", "reminders", "daily_review"]
+    },
+    "financial_tracking": {
+      "enabled": false,
+      "status": "planned_after_security_review",
+      "tasks": ["csv_aggregator", "balance_tracker", "unified_dashboard"]
+    }
+  },
+
+  "security": {
+    "firewall": true,
+    "stealth_mode": true,
+    "dns": "quad9",
+    "dns_servers": ["9.9.9.9", "149.112.112.112"],
+    "touch_id_sudo": true,
+    "removed_apps": ["TeamViewer"]
+  },
+
+  "paths": {
+    "home": "~/Anys",
+    "bin": "~/bin/anys",
+    "workflow": "~/Library/Services/Anys.workflow"
+  },
+
+  "next_session": [
+    "Grant Terminal accessibility permissions for keystroke automation",
+    "Build file automation (Downloads, Desktop organizer)",
+    "Set up task capture system",
+    "Explore financial tracking security model"
+  ]
+}
