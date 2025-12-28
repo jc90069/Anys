@@ -4,7 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Anys** is a Year 1 Domestic Agent - a personal AI assistant focused on voice-first automation, privacy, and eliminating administrative overhead. The system is designed with security-first principles: all voice processing runs locally using Whisper, and sensitive data never touches the cloud.
+**Anys** is a personal AI assistant with two components:
+
+1. **Discord Bot** (`check-anys/`) - Claude-powered assistant that lives in #anys channels
+   - Uses Anthropic API (Sonnet 4 + Opus 4 + Haiku 3)
+   - Long-term memory via Supabase
+   - Security: Owner-only, identity verification
+
+2. **Voice Tool** (`~/bin/anys`) - Local voice transcription
+   - Uses local Whisper (no cloud)
+   - Records → Transcribes → Types
+
+## Brain (Knowledge Base)
+
+**READ FIRST:** `/Users/claude/Anys/brain/`
+
+| File | What It Contains |
+|------|------------------|
+| `brain/stack.md` | All APIs, services, billing, credentials |
+| `brain/me.md` | Personal preferences, goals, network |
+| `brain/projects.md` | All projects and their status |
+
+## API Usage Summary
+
+| API | Used By | Billing |
+|-----|---------|---------|
+| **Anthropic** | Anys Discord bot | console.anthropic.com |
+| **Gemini** | gifit (~/gifit/) | Google Cloud |
+| **Discord** | Anys + Factory bots | Free |
+| **Supabase** | Anys + Factory | Free tier |
 
 ## Architecture
 
