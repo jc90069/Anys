@@ -15,6 +15,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Uses local Whisper (no cloud)
    - Records → Transcribes → Types
 
+## Vision Document
+
+**Full architecture:** `/Users/claude/Anys/ANYS_VISION.md`
+
+The complete design for Anys as a local AI operating system with plugin architecture, designed for M4 Max 64GB.
+
 ## Brain (Knowledge Base)
 
 **READ FIRST:** `/Users/claude/Anys/brain/`
