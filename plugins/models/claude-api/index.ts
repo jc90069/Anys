@@ -4,15 +4,73 @@
 // ═══════════════════════════════════════════════════════════════
 
 import Anthropic from '@anthropic-ai/sdk';
-import {
-  Plugin,
-  PluginManifest,
-  PluginContext,
-  ModelProvider,
-  ModelDefinition,
-  CompletionOptions,
-  CompletionResult,
-} from '../../../core/types.js';
+
+// Inline types (to avoid import resolution issues with dynamic loading)
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+interface CompletionOptions {
+  model: string;
+  messages: Message[];
+  system?: string;
+  max_tokens?: number;
+  temperature?: number;
+}
+
+interface CompletionResult {
+  content: string;
+  model: string;
+  usage?: { input_tokens: number; output_tokens: number };
+  latency_ms?: number;
+}
+
+interface ModelDefinition {
+  id: string;
+  type: string;
+  context?: number;
+  capabilities?: string[];
+  local?: boolean;
+}
+
+interface Logger {
+  debug: (msg: string, ...args: unknown[]) => void;
+  info: (msg: string, ...args: unknown[]) => void;
+  warn: (msg: string, ...args: unknown[]) => void;
+  error: (msg: string, ...args: unknown[]) => void;
+}
+
+interface PluginContext {
+  config: unknown;
+  log: Logger;
+  emit: (event: string, data?: unknown) => void;
+  on: (event: string, handler: (data: unknown) => void) => void;
+}
+
+interface PluginManifest {
+  name: string;
+  version: string;
+  description: string;
+  category: string;
+  provides: unknown;
+}
+
+interface ModelProvider {
+  name: string;
+  listModels(): Promise<ModelDefinition[]>;
+  isAvailable(modelId: string): Promise<boolean>;
+  complete(options: CompletionOptions): Promise<CompletionResult>;
+  stream?(options: CompletionOptions): AsyncIterable<string>;
+}
+
+interface Plugin {
+  manifest: PluginManifest;
+  onLoad?(context: PluginContext): Promise<void>;
+  onEnable?(context: PluginContext): Promise<void>;
+  onDisable?(context: PluginContext): Promise<void>;
+  modelProvider?: ModelProvider;
+}
 
 // Model mappings
 const MODELS: Record<string, string> = {

@@ -4,13 +4,57 @@
 // ═══════════════════════════════════════════════════════════════
 
 import * as readline from 'readline';
-import {
-  Plugin,
-  PluginManifest,
-  PluginContext,
-  InterfaceProvider,
-  Message,
-} from '../../../core/types.js';
+
+// Inline types
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+interface CompletionResult {
+  content: string;
+  model: string;
+  usage?: { input_tokens: number; output_tokens: number };
+  latency_ms?: number;
+}
+
+interface Logger {
+  debug: (msg: string, ...args: unknown[]) => void;
+  info: (msg: string, ...args: unknown[]) => void;
+  warn: (msg: string, ...args: unknown[]) => void;
+  error: (msg: string, ...args: unknown[]) => void;
+}
+
+interface PluginContext {
+  config: unknown;
+  log: Logger;
+  emit: (event: string, data?: unknown) => void;
+  on: (event: string, handler: (data: unknown) => void) => void;
+  complete: (options: { messages: Message[]; model?: string }) => Promise<CompletionResult>;
+}
+
+interface PluginManifest {
+  name: string;
+  version: string;
+  description: string;
+  category: string;
+  provides: unknown;
+}
+
+interface InterfaceProvider {
+  name: string;
+  start(): Promise<void>;
+  stop(): Promise<void>;
+  handleMessage?(message: string): Promise<string>;
+}
+
+interface Plugin {
+  manifest: PluginManifest;
+  onLoad?(context: PluginContext): Promise<void>;
+  onEnable?(context: PluginContext): Promise<void>;
+  onDisable?(context: PluginContext): Promise<void>;
+  interfaceProvider?: InterfaceProvider;
+}
 
 class CliInterfaceProvider implements InterfaceProvider {
   name = 'cli';

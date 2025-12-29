@@ -57,8 +57,8 @@ export class Anys {
       { role: 'user', content: message },
     ];
 
-    // Build system prompt from brain files
-    const systemPrompt = await this.buildSystemPrompt();
+    // Build system prompt with memory context
+    const systemPrompt = await this.buildSystemPrompt(message);
 
     const result = await this.pluginManager.complete({
       model: options?.model,
@@ -76,9 +76,9 @@ export class Anys {
     return result;
   }
 
-  // Build system prompt from brain files
-  private async buildSystemPrompt(): Promise<string> {
-    const basePrompt = `You are Anys, a personal AI assistant.
+  // Build system prompt from brain files and memory
+  private async buildSystemPrompt(userMessage: string): Promise<string> {
+    const basePrompt = `You are Anys, a personal AI assistant running locally on the user's Mac.
 
 Personality:
 - Helpful, concise, and professional
@@ -86,12 +86,25 @@ Personality:
 - Match the user's energy
 - No emojis unless the user uses them first
 
-You have access to the user's knowledge base and can remember past conversations.`;
+You have access to the user's memories and knowledge. Use this context to personalize responses.`;
 
-    // TODO: Load and append brain files content
-    // const brainContent = await this.loadBrainFiles();
+    // Search for relevant memories based on the user's message
+    let memoryContext = '';
+    try {
+      const memories = await this.pluginManager.searchMemory(userMessage, { limit: 5 });
+      if (memories.length > 0) {
+        memoryContext = '\n\n[YOUR MEMORIES ABOUT THIS USER]\n';
+        for (const mem of memories) {
+          memoryContext += `- [${mem.type}] ${mem.content}\n`;
+        }
+      }
+    } catch {
+      // Memory search failed, continue without
+    }
 
-    return basePrompt;
+    // TODO: Also load brain files (stack.md, me.md, projects.md)
+
+    return basePrompt + memoryContext;
   }
 
   // Get config

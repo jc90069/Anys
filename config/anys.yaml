@@ -53,9 +53,9 @@ plugins:
     - models/claude-api
     # - models/ollama         # Uncomment for M4
 
-    # Actions
-    - actions/macos-control
-    - actions/file-manager
+    # Actions (coming soon)
+    # - actions/macos-control
+    # - actions/file-manager
 
     # Perceptions
     # - perceptions/voice-input  # Uncomment when ready
@@ -63,7 +63,7 @@ plugins:
 
     # Memory
     - memory/local-json
-    # - memory/chromadb         # Uncomment for vector search
+    # - memory/chromadb         # Needs Chroma server (run: chroma run)
 
     # Interfaces
     - interfaces/cli

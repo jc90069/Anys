@@ -1,0 +1,29 @@
+name: chromadb
+version: "1.0.0"
+description: Vector database for semantic memory search
+category: memory
+
+provides:
+  memory:
+    - id: chromadb
+      description: ChromaDB vector storage with semantic search
+      capabilities: [store, search, delete, semantic-search, embeddings]
+
+config:
+  path:
+    type: string
+    default: ./data/chroma
+    description: Path to ChromaDB storage
+
+  collection:
+    type: string
+    default: anys_memory
+    description: Collection name for memories
+
+  embedding_model:
+    type: string
+    default: default
+    description: Embedding model to use
+
+author: anys-core
+tags: [memory, vector, semantic, embeddings, chromadb]

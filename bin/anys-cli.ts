@@ -131,15 +131,26 @@ program
 program
   .command('memory')
   .description('Memory operations')
-  .option('-s, --search <query>', 'Search memories')
+  .option('-s, --search <query>', 'Search memories (semantic)')
   .option('-l, --list', 'List recent memories')
-  .action(async (options: { search?: string; list?: boolean }) => {
+  .option('-a, --add <content>', 'Add a memory')
+  .option('-t, --type <type>', 'Memory type (fact, preference, decision, event)', 'fact')
+  .option('-i, --importance <n>', 'Importance 1-10', '5')
+  .action(async (options: { search?: string; list?: boolean; add?: string; type?: string; importance?: string }) => {
     const anys = new Anys();
     await anys.init();
 
     const pm = anys.getPluginManager();
 
-    if (options.search) {
+    if (options.add) {
+      const id = await pm.storeMemory({
+        type: options.type as 'fact' | 'preference' | 'decision' | 'event',
+        content: options.add,
+        importance: parseInt(options.importance || '5'),
+        timestamp: new Date(),
+      });
+      console.log(`\n✓ Memory stored: ${id}\n`);
+    } else if (options.search) {
       const results = await pm.searchMemory(options.search, { limit: 10 });
       console.log(`\nFound ${results.length} memories:\n`);
       for (const entry of results) {
@@ -155,6 +166,11 @@ program
       for (const entry of results) {
         console.log(`[${entry.type}] ${entry.content.substring(0, 60)}${entry.content.length > 60 ? '...' : ''}`);
       }
+    } else {
+      console.log('\nUsage:');
+      console.log('  anys memory --add "User prefers dark mode" --type preference');
+      console.log('  anys memory --search "dark mode"');
+      console.log('  anys memory --list');
     }
 
     await anys.shutdown();

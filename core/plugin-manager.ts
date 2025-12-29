@@ -5,6 +5,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import YAML from 'yaml';
 import {
   Plugin,
@@ -119,11 +120,14 @@ export class PluginManager {
   // Load a plugin
   async loadPlugin(fullName: string): Promise<Plugin | null> {
     const [category, name] = fullName.split('/');
-    const pluginPath = path.join(this.pluginsDir, category, name, 'index.js');
 
-    // Check for TypeScript version during development
-    const tsPath = path.join(this.pluginsDir, category, name, 'index.ts');
-    const actualPath = fs.existsSync(pluginPath) ? pluginPath : tsPath;
+    // Use absolute paths
+    const baseDir = path.resolve(process.cwd(), this.pluginsDir);
+    const pluginDir = path.join(baseDir, category, name);
+    const jsPath = path.join(pluginDir, 'index.js');
+    const tsPath = path.join(pluginDir, 'index.ts');
+
+    const actualPath = fs.existsSync(jsPath) ? jsPath : tsPath;
 
     if (!fs.existsSync(actualPath)) {
       console.error(`Plugin not found: ${fullName} (looked for ${actualPath})`);
@@ -131,8 +135,9 @@ export class PluginManager {
     }
 
     try {
-      // Dynamic import
-      const module = await import(actualPath);
+      // Dynamic import using file URL for proper module resolution
+      const fileUrl = pathToFileURL(actualPath).href;
+      const module = await import(fileUrl);
       const PluginClass = module.default;
 
       // Get manifest

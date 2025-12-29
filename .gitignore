@@ -1,6 +1,26 @@
+# Dependencies
 node_modules/
-.env
-.DS_Store
-*.log
-__pycache__/
 .venv/
+__pycache__/
+
+# Build output
+dist/
+
+# Data (contains personal memories)
+data/
+
+# Secrets
+config/secrets.env
+.env
+*.env.local
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Editor
+.vscode/
+.idea/
