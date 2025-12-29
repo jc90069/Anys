@@ -1,0 +1,43 @@
+name: claude-api
+version: "1.0.0"
+description: Anthropic Claude API integration (Haiku, Sonnet, Opus)
+category: models
+
+provides:
+  models:
+    - id: claude-api/haiku
+      type: text
+      context: 200000
+      capabilities: [fast, classification]
+
+    - id: claude-api/sonnet
+      type: text
+      context: 200000
+      capabilities: [balanced, code, reasoning]
+
+    - id: claude-api/opus
+      type: text
+      context: 200000
+      capabilities: [complex, deep-reasoning, creative]
+
+requires:
+  env:
+    - ANTHROPIC_API_KEY
+
+config:
+  api_key:
+    type: string
+    env: ANTHROPIC_API_KEY
+    required: true
+
+  default_model:
+    type: string
+    default: sonnet
+    options: [haiku, sonnet, opus]
+
+  max_tokens:
+    type: number
+    default: 4096
+
+author: anys-core
+tags: [cloud, anthropic, claude]

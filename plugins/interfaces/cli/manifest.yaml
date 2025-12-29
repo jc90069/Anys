@@ -1,0 +1,24 @@
+name: cli
+version: "1.0.0"
+description: Command-line interface for Anys
+category: interfaces
+
+provides:
+  interfaces:
+    - id: cli
+      description: Terminal-based interaction
+      type: cli
+
+config:
+  colors:
+    type: boolean
+    default: true
+    description: Enable colored output
+
+  stream:
+    type: boolean
+    default: true
+    description: Stream responses as they come
+
+author: anys-core
+tags: [interface, terminal, cli]

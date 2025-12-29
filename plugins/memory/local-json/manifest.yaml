@@ -1,0 +1,24 @@
+name: local-json
+version: "1.0.0"
+description: Simple JSON file-based memory storage
+category: memory
+
+provides:
+  memory:
+    - id: local-json
+      description: Local JSON file storage
+      capabilities: [store, search, delete]
+
+config:
+  path:
+    type: string
+    default: ./data/memory.json
+    description: Path to memory file
+
+  max_entries:
+    type: number
+    default: 10000
+    description: Maximum number of memory entries
+
+author: anys-core
+tags: [memory, local, simple]

@@ -1,0 +1,10 @@
+#!/bin/bash
+# ═══════════════════════════════════════════════════════════════
+# ANYS CLI WRAPPER
+# Runs the Anys CLI from any directory
+# ═══════════════════════════════════════════════════════════════
+
+ANYS_DIR="/Users/claude/Anys"
+
+cd "$ANYS_DIR"
+exec npx tsx bin/anys-cli.ts "$@"

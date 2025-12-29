@@ -1,0 +1,53 @@
+name: ollama
+version: "1.0.0"
+description: Local LLM via Ollama (Llama, DeepSeek, Mistral, etc.)
+category: models
+
+provides:
+  models:
+    - id: ollama/llama-8b
+      type: text
+      context: 128000
+      capabilities: [fast, local]
+      local: true
+
+    - id: ollama/llama-70b
+      type: text
+      context: 128000
+      capabilities: [reasoning, local]
+      local: true
+
+    - id: ollama/deepseek-coder
+      type: code
+      context: 128000
+      capabilities: [code, local]
+      local: true
+
+    - id: ollama/mistral
+      type: text
+      context: 32000
+      capabilities: [balanced, local]
+      local: true
+
+config:
+  host:
+    type: string
+    default: http://localhost:11434
+    description: Ollama API host
+
+  default_model:
+    type: string
+    default: llama3.1:8b
+    description: Default model to use
+
+  models:
+    type: object
+    default:
+      llama-8b: llama3.1:8b
+      llama-70b: llama3.1:70b
+      deepseek-coder: deepseek-coder-v2:33b
+      mistral: mistral:7b
+    description: Model ID mappings
+
+author: anys-core
+tags: [local, ollama, llama, fast]

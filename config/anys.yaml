@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════
+# ANYS CONFIGURATION
+# Local AI Operating System
+# ═══════════════════════════════════════════════════════════════
+
+version: "1.0"
+
+# Hardware (auto-detected, can override)
+hardware:
+  # chip: "Apple M4 Max"  # Uncomment when you get M4
+  # memory_gb: 64
+
+# Intelligence layer
+intelligence:
+  router:
+    strategy: auto  # auto | local-first | cloud-first | cost-optimized
+    fallback: true  # Fall back to cloud if local fails
+
+  # Which model for what task
+  assignments:
+    primary: claude-api/sonnet    # Main responses
+    fast: claude-api/haiku        # Quick routing/classification
+    code: claude-api/sonnet       # Code generation
+    complex: claude-api/opus      # Deep reasoning
+    # Uncomment when M4 arrives:
+    # primary: ollama/llama-70b
+    # fast: ollama/llama-8b
+    # code: ollama/deepseek-coder
+
+  thresholds:
+    complexity_for_cloud: 0.7     # When to use cloud (0-1)
+    max_local_latency_ms: 5000    # Max wait for local model
+
+# Memory configuration
+memory:
+  primary: local-json
+  path: ./data
+  retention:
+    conversations: 365  # days
+    episodic: forever
+
+# Voice settings
+voice:
+  wake_word: "hey anys"
+  wake_word_sensitivity: 0.5
+  stt: whisper-local/base
+  tts: macos-say  # or piper, elevenlabs
+
+# Plugin management
+plugins:
+  enabled:
+    # Models
+    - models/claude-api
+    # - models/ollama         # Uncomment for M4
+
+    # Actions
+    - actions/macos-control
+    - actions/file-manager
+
+    # Perceptions
+    # - perceptions/voice-input  # Uncomment when ready
+    # - perceptions/file-watcher
+
+    # Memory
+    - memory/local-json
+    # - memory/chromadb         # Uncomment for vector search
+
+    # Interfaces
+    - interfaces/cli
+
+  disabled:
+    - perceptions/screen-capture  # Privacy
+
+  auto_update: false
+  sources:
+    - ./plugins
+
+# Self-improvement
+self_improvement:
+  enabled: true
+
+  can_suggest:
+    - new_plugins
+    - model_upgrades
+    - config_changes
+    - performance_fixes
+
+  auto_apply:
+    - safe_config_changes
+
+  requires_approval:
+    - new_plugins
+    - model_downloads
+    - hardware_intensive_changes
